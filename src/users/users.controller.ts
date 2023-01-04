@@ -8,6 +8,20 @@ export class UsersController {
 
   constructor(private readonly usersService: UsersService) {}
 
+  @Post('/singin')
+  async login(@Body() loginUserDto: CreateUserDto) {
+
+    const LoginAuth = await  this.usersService.login(loginUserDto.email, loginUserDto.password);
+    return LoginAuth;
+  }
+
+  @Post('/token')
+  async validateToken(@Body() token: string) {
+    const tokenAuth = await this.usersService.validateToken(token);
+    return tokenAuth;
+  }
+ 
+
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

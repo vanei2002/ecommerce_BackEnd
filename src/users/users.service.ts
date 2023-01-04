@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose/dist';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocuments, } from './entities/user.entity';
+import { User, UserDocuments, } from './schema/user.schema';
 import { Model } from 'mongoose';
 
 
@@ -10,6 +10,18 @@ import { Model } from 'mongoose';
 export class UsersService {
 
   constructor( @InjectModel(User.name)private userModel: Model<UserDocuments>){}
+
+  async login(email: string, password: string) {
+       
+    const user = await this.userModel.findOne({email: email, password: password}).exec();
+    return user? user : `Usuario não encontrado cadastrad0`;
+  }
+
+  validateToken(token: string) {
+    return this.userModel.findOne({
+      token: token
+    });
+  }
 
   create(createUserDto: CreateUserDto) {
     const user= new this.userModel(createUserDto);
@@ -40,4 +52,6 @@ export class UsersService {
   remove(id: string ) {
     return this.userModel.deleteOne({ _id: id}).exec();
   }
+
+
 }
