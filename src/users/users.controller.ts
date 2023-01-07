@@ -20,11 +20,21 @@ export class UsersController {
     const tokenAuth = await this.usersService.validateToken(token);
     return tokenAuth;
   }
- 
+  
+  @Post('singin/email')
+  async loginEmail(@Body() email: string) {
+    console.log(email);
+    return this.usersService.loginEmail(email);
+  }
 
-  @Post()
+  @Post('/create')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @Post('/reset')
+  reset (@Body() resetUserDto: CreateUserDto) {
+    return this.usersService.reset(resetUserDto.email);
   }
 
   @Get()
@@ -39,6 +49,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    
     try{
       return this.usersService.update(id, updateUserDto);
     }catch(err){ return Error(err);}

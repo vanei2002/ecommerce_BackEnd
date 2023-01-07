@@ -8,7 +8,7 @@ async function bootstrap() {
   
   app.use(cors());
 
-  await app.listen(process.env.BASE_URL|| 3000);
+  await app.listen(process.env.NEST_PORT|| 3000);
 
 
 }
