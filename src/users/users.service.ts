@@ -6,18 +6,24 @@ import { User, UserDocuments, } from './schema/user.schema';
 import { Model } from 'mongoose';
 
 
-const sgMail = require("@sendgrid/mail")
+const sgMail = require('@sendgrid/mail');
 
-sgMail.setApiKey("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")
+/* sgMail.setApiKey("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")
+ */sgMail.setApiKey("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")
 @Injectable()
 export class UsersService {
 
   constructor( @InjectModel(User.name)private userModel: Model<UserDocuments>){}
 
   async login(email: string, password: string) {
-       
     const user = await this.userModel.findOne({email, password});
-    return user? user : `Usuario não encontrado cadastrad0`;
+    return user? user : `Usuario não encontrado`;
+  }
+
+  async loginEmail(email: string){
+
+    const user = await this.userModel.findOne({email})
+    return user?  user : false;
   }
 
   async create(createUserDto: CreateUserDto) {
@@ -31,15 +37,10 @@ export class UsersService {
  
   }
 
-  validateToken(token: string) {
-    return this.userModel.findOne({
-      token: token
-    });
-  }
-
-  loginEmail(email: string){
-    this.userModel.findOne({email})
-    return true
+  async validateToken(token: string) {
+    const user = await this.userModel.findOne({token});
+    console.log(user)
+    return user? user : `Token não encontrado`;
   }
 
   async reset(email: string) {
@@ -50,7 +51,7 @@ export class UsersService {
 
       await this.userModel.updateOne(({email, password:"Vanei Mendes"}))
 
-      const message = ({
+      const msg = ({
         to: email,
         from: "vanei.jesus016@gmail.com",
         subject: "Reset de Email",
@@ -58,9 +59,11 @@ export class UsersService {
         html: "Email recebido"
       })
 
-      sgMail.send(message).then(e => console.log(e));
+      sgMail.send(msg)
+      .then(e => console.log("Email sent " + e.response))
+      .catch(e => console.log("Error; " + e))
     
-      return "Email enviado"
+      return true
     } else {
       return `Email não encontrado`;
     }

@@ -10,21 +10,20 @@ export class UsersController {
 
   @Post('/singin')
   async login(@Body() loginUserDto: CreateUserDto) {
-
     const LoginAuth = await  this.usersService.login(loginUserDto.email, loginUserDto.password);
     return LoginAuth;
   }
 
   @Post('/token')
-  async validateToken(@Body() token: string) {
-    const tokenAuth = await this.usersService.validateToken(token);
-    return tokenAuth;
+  async validateToken(@Body() validateUserDto: CreateUserDto) { 
+    const tokens = await this.usersService.validateToken(validateUserDto.token);
+    console.log(tokens)
+    return tokens;
   }
   
-  @Post('singin/email')
-  async loginEmail(@Body() email: string) {
-    console.log(email);
-    return this.usersService.loginEmail(email);
+  @Post('/email')
+  async loginEmail(@Body() loginEmailUserDto: CreateUserDto) {
+    return this.usersService.loginEmail(loginEmailUserDto.email);
   }
 
   @Post('/create')
