@@ -29,7 +29,6 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const validateUser = await this.userModel.findOne({email : createUserDto.email});
 
-    console.log(createUserDto)
     if(validateUser)return `Usuário já cadastrado`
 
     const user = new this.userModel(createUserDto); 
