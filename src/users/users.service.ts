@@ -10,30 +10,43 @@ const sgMail = require('@sendgrid/mail');
 
 /* sgMail.setApiKey("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")
  */sgMail.setApiKey("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")
-@Injectable()
+
+ @Injectable()
 export class UsersService {
 
   constructor( @InjectModel(User.name)private userModel: Model<UserDocuments>){}
 
   async login(email: string, password: string) {
-    const user = await this.userModel.findOne({email, password});
-    return user? user : `Usuario não encontrado`;
+    
+    try{
+      const user = await this.userModel.findOne({email, password});
+      return user? user : `Usuario não encontrado`;
+    }catch(e){
+      console.log(e)
+    }
   }
 
   async loginEmail(email: string){
-
     const user = await this.userModel.findOne({email})
     return user?  user : false;
   }
 
+
   async create(createUserDto: CreateUserDto) {
+
     const validateUser = await this.userModel.findOne({email : createUserDto.email});
+    console.log(validateUser)
 
     if(validateUser)return `Usuário já cadastrado`
-
+    
     const user = new this.userModel(createUserDto); 
-    return user.save();
- 
+    
+    if(user){
+      
+      user.save();
+      return true;
+
+    }else{ return false }
   }
 
   async validateToken(token: string) {
@@ -43,11 +56,9 @@ export class UsersService {
   }
 
   async reset(email: string) {
-
     const user = await this.userModel.findOne({email});
 
     if(user) {
-
       await this.userModel.updateOne(({email, password:"Vanei Mendes"}))
 
       const msg = ({
@@ -67,8 +78,6 @@ export class UsersService {
       return `Email não encontrado`;
     }
   }
-
-
 
   findAll() {
     return this.userModel.find();

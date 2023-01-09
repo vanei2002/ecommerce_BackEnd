@@ -10,8 +10,7 @@ export class UsersController {
 
   @Post('/singin')
   async login(@Body() loginUserDto: CreateUserDto) {
-    const LoginAuth = await  this.usersService.login(loginUserDto.email, loginUserDto.password);
-    return LoginAuth;
+    return await  this.usersService.login(loginUserDto.email, loginUserDto.password);
   }
 
   @Post('/token')
