@@ -21,13 +21,13 @@ export class UsersController {
   }
   
   @Post('/email')
-  async loginEmail(@Body() loginEmailUserDto: CreateUserDto) {
+   loginEmail(@Body() loginEmailUserDto: CreateUserDto) {
     return this.usersService.loginEmail(loginEmailUserDto.email);
   }
 
   @Post('/create')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(@Body() NewUserDto: CreateUserDto) {
+    return this.usersService.create(NewUserDto);
   }
 
   @Post('/reset')

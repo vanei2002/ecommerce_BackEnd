@@ -1,5 +1,5 @@
 {
-  "name": "project-nest",
+  "name": "ecommerce",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -28,7 +28,7 @@
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.0.0",
     "@sendgrid/mail": "^7.7.0",
-    "mongoose": "^6.8.1",
+    "mongoose": "^6.8.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },

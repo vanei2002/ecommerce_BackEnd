@@ -20,6 +20,7 @@ export class UsersService {
     
     try{
       const user = await this.userModel.findOne({email, password});
+      console.log(user)
       return user? user : `Usuario não encontrado`;
     }catch(e){
       console.log(e)
@@ -32,17 +33,15 @@ export class UsersService {
   }
 
 
-  async create(createUserDto: CreateUserDto) {
+  async create(NewUserDto: CreateUserDto) {
 
-    const validateUser = await this.userModel.findOne({email : createUserDto.email});
-    console.log(validateUser)
+    const validateUser = await this.userModel.findOne({email : NewUserDto.email});
 
     if(validateUser)return `Usuário já cadastrado`
     
-    const user = new this.userModel(createUserDto); 
+    const user = new this.userModel(NewUserDto); 
     
     if(user){
-      
       user.save();
       return true;
 
